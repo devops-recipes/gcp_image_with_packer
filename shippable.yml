@@ -36,7 +36,7 @@ jobs:
 #        switch: off
       - TASK:
           script:
-            - echo $(shipctl get_integration_resource_field img_gcp_cli JSONKEY) > foo.txt
+            - echo $(shipctl get_integration_resource_field img_gcp_cli JSON_key) > foo.txt
             - ls -al
 #            - pushd $(shipctl get_resource_state "prepami_repo")
 #            - cd u16Base
