@@ -44,3 +44,5 @@ jobs:
 #            - popd
 #    on_failure:
 #      - script: cat $(shipctl get_resource_state prepami_repo)/u16Base/output.txt
+    flags:
+      - gcp_packer
