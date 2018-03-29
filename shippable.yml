@@ -1,0 +1,46 @@
+resources:
+#  - name: prepami_repo
+#    type: gitRepo
+#    integration: drship_github
+#    pointer:
+#      sourceName: shippable/buildami
+#      branch: master
+#
+#  - name: baseami_params
+#    type: params
+#    version:
+#      params:
+#        SOURCE_AMI: "ami-772aa961"
+#        VPC_ID: "vpc-266f3241"
+#        SUBNET_ID: "subnet-6df12f24"
+#        SECURITY_GROUP_ID: "sg-f634518c"
+#        REGION: "us-east-1"
+
+  - name: img_gcp_cli
+    type: cliConfig
+    integration: drship_gcp
+    versionTemplate:
+      region: "us-west1-a"
+
+jobs:
+  - name: u16baseami_prep
+    type: runSh
+    triggerMode: parallel
+    dependencyMode: strict
+    steps:
+#      - IN: prepami_repo
+#        switch: off
+      - IN: img_gcp_cli
+        switch: off
+#      - IN: u16baseami_params
+#        switch: off
+      - TASK:
+          script:
+            - echo $(shipctl get_integration_resource_field img_gcp_cli JSONKEY) > foo.txt
+            - ls -al
+#            - pushd $(shipctl get_resource_state "prepami_repo")
+#            - cd u16Base
+#            - ./basePack.sh u16baseami_prep ami_bits_access_cli
+#            - popd
+#    on_failure:
+#      - script: cat $(shipctl get_resource_state prepami_repo)/u16Base/output.txt

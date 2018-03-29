@@ -1,0 +1,58 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "RES_IMG_VER_NAME": "",
+    "RES_IMG_VER_NAME_DASH": "",
+    "IMAGE_NAMES_SPACED": "",
+    "REGION": "",
+    "VPC_ID": "",
+    "SUBNET_ID": "",
+    "SOURCE_AMI": "test",
+    "SECURITY_GROUP_ID": ""
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `REGION`}}",
+      "vpc_id": "{{user `VPC_ID`}}",
+      "subnet_id": "{{user `SUBNET_ID`}}",
+      "associate_public_ip_address": true,
+      "security_group_id": "{{user `SECURITY_GROUP_ID`}}",
+      "source_ami": "{{user `SOURCE_AMI`}}",
+      "instance_type": "c4.2xlarge",
+      "ssh_username": "ubuntu",
+      "ami_name": "u16base-ami-{{user `RES_IMG_VER_NAME_DASH`}}-{{isotime \"2006-01-02-1504\"}}",
+      "ami_groups": "all",
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "volume_type": "io1",
+          "volume_size": "120",
+          "iops": "6000",
+          "delete_on_termination": true
+        }
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "uname -a",
+        "uptime"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "baseInit.sh",
+      "environment_vars": [
+        "SHIPPABLE_RELEASE_VERSION={{user `SHIPPABLE_RELEASE_VERSION`}}"
+      ],
+      "execute_command": "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+    }
+  ]
+}
