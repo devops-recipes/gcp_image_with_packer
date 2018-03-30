@@ -17,7 +17,7 @@
       "zone": "{{user `zone`}}",
       "image_description": "Demo Ubuntu Machine Image",
       "image_name": "u16demo-{{timestamp}}",
-      "disk_size": 100,
+      "disk_size": 16,
       "disk_type": "pd-ssd",
       "ssh_username": "root",
       "account_file": "{{ user `service_account_json`}}"
@@ -27,14 +27,14 @@
     {
       "type": "shell",
       "inline": [
-        "sleep 30",
+        "sleep 10",
         "uname -a",
         "uptime"
       ]
     },
     {
       "type": "shell",
-      "script": "baseInit.sh",
+      "script": "init.sh",
       "execute_command": "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
     }
   ]

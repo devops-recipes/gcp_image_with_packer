@@ -28,8 +28,8 @@ jobs:
               env:
                 - SOURCE_IMAGE_FAMILY: "ubuntu-1604-lts"
                 - MACHINE_TYPE: "n1-standard-1"
-                - REGION: "europe-west1"
-                - ZONE: "europe-west1-b"
+                - REGION: "us-west1"
+                - ZONE: "us-west1-b"
                 - PROJECT_ID: "devops-recipes"
                 - SERVICE_ACCOUNT_JSON: "gcp_key.json"
           script:
@@ -39,7 +39,7 @@ jobs:
             - packer build -machine-readable -var service_account_json=$SERVICE_ACCOUNT_JSON -var region=$REGION -var source_image_family=$SOURCE_IMAGE_FAMILY -var machine_type=$MACHINE_TYPE -var zone=$ZONE -var project_id=$PROJECT_ID baseAMI.json 2>&1 | tee output.txt
             - cat output.txt
             - popd
-#    on_failure:
-#      - script: cat $(shipctl get_resource_state prepami_repo)/u16Base/output.txt
+    on_failure:
+      - script: cat $(shipctl get_resource_state "pack_conf_repo")/u16img/output.txt
     flags:
       - gcp_packer
