@@ -31,11 +31,9 @@ jobs:
                 - REGION: "europe-west1"
                 - ZONE: "europe-west1-b"
                 - PROJECT_ID: "devops-recipes"
-                - SERVICE_ACCOUNT_JSON=: "gcp_key.json"
+                - SERVICE_ACCOUNT_JSON: "gcp_key.json"
           script:
             - pushd $(shipctl get_resource_state "pack_conf_repo")/u16img
-            - packer -v
-            - export
             - echo $(shipctl get_integration_resource_field img_gcp_cli JSON_key) > $SERVICE_ACCOUNT_JSON
             - packer validate baseAMI.json
             - packer build -machine-readable -var service_account_json=$SERVICE_ACCOUNT_JSON -var region=$REGION -var source_image_family=$SOURCE_IMAGE_FAMILY -var machine_type=$MACHINE_TYPE -var zone=$ZONE -var project_id=$PROJECT_ID baseAMI.json 2>&1 | tee output.txt
