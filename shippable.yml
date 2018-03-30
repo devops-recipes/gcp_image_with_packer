@@ -38,12 +38,12 @@ jobs:
 #            - export SERVICE_ACCOUNT_JSON="gcp_key.json"
             - packer validate baseAMI.json
             - packer build -machine-readable \
-                -var source_image_family=$SOURCE_IMAGE_FAMILY \
-                -var machine_type=$MACHINE_TYPE \
-                -var region=$REGION \
-                -var zone=$ZONE \
-                -var project_id=$PROJECT_ID \
-                baseAMI.json 2>&1 | tee output.txt
+              -var region=$REGION \
+              -var source_image_family=$SOURCE_IMAGE_FAMILY \
+              -var machine_type=$MACHINE_TYPE \
+              -var zone=$ZONE \
+              -var project_id=$PROJECT_ID \
+              baseAMI.json 2>&1 | tee output.txt
             - cat output.txt
             - popd
 #    on_failure:
