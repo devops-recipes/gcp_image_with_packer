@@ -32,9 +32,7 @@ jobs:
                 - ZONE: "europe-west1-b"
                 - PROJECT_ID: "devops-recipes"
           script:
-            - pushd $(shipctl get_resource_state "pack_conf_repo")
-            - ls -al
-            - cd u16image
+            - pushd $(shipctl get_resource_state "pack_conf_repo")/u16img
 #            - echo $(shipctl get_integration_resource_field img_gcp_cli JSON_key) > gcp_key.json
 #            - export SERVICE_ACCOUNT_JSON="gcp_key.json"
             - packer validate baseAMI.json
