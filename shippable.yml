@@ -33,21 +33,16 @@ jobs:
                 - PROJECT_ID: "devops-recipes"
           script:
             - pushd $(shipctl get_resource_state "pack_conf_repo")/u16img
+            - packer -v
 #            - echo $(shipctl get_integration_resource_field img_gcp_cli JSON_key) > gcp_key.json
 #            - export SERVICE_ACCOUNT_JSON="gcp_key.json"
             - packer validate baseAMI.json
             - packer build -machine-readable \
-                -var aws_access_key=$AWS_ACCESS_KEY_ID \
-                -var aws_secret_key=$AWS_SECRET_ACCESS_KEY \
-                -var REGION=$REGION \
-                -var VPC_ID=$VPC_ID \
-                -var SUBNET_ID=$SUBNET_ID \
-                -var SECURITY_GROUP_ID=$SECURITY_GROUP_ID \
-                -var SOURCE_AMI=$SOURCE_AMI \
-                -var IMAGE_NAMES_SPACED="${IMAGE_NAMES_SPACED}" \
-                -var RES_IMG_VER_NAME=$SHIPPABLE_RELEASE_VERSION \
-                -var RES_IMG_VER_NAME_DASH=$SHIPPABLE_RELEASE_VERSION \
-                -var SHIPPABLE_RELEASE_VERSION=$SHIPPABLE_RELEASE_VERSION \
+                -var source_image_family=$SOURCE_IMAGE_FAMILY \
+                -var machine_type=$MACHINE_TYPE \
+                -var region=$REGION \
+                -var zone=$ZONE \
+                -var project_id=$PROJECT_ID \
                 baseAMI.json 2>&1 | tee output.txt
             - cat output.txt
 #            - ./basePack.sh u16baseami_prep ami_bits_access_cli
