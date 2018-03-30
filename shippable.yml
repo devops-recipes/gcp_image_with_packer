@@ -45,7 +45,6 @@ jobs:
                 -var project_id=$PROJECT_ID \
                 baseAMI.json 2>&1 | tee output.txt
             - cat output.txt
-#            - ./basePack.sh u16baseami_prep ami_bits_access_cli
             - popd
 #    on_failure:
 #      - script: cat $(shipctl get_resource_state prepami_repo)/u16Base/output.txt
